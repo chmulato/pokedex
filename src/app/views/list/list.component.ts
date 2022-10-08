@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { VirtualTimeScheduler } from 'rxjs';
 
-import { PokemonsService } from 'src/app/services/pokemons.service';
+import { PokemonsService } from '../../services/pokemons.service';
 
 @Component({
   selector: 'app-list',
@@ -10,20 +10,24 @@ import { PokemonsService } from 'src/app/services/pokemons.service';
 })
 export class ListComponent implements OnInit {
 
+  nameFilter = '';
+
   selectedPkm = null;
 
-  pokemonList : any;
+  get pokemonList() {
+    return this.pokemonsService.pokemonList.filter(pokemon => {
+      return pokemon.name.toLowerCase().indexOf(this.nameFilter.toLowerCase()) !== -1;
+    })
+  }
 
   get pkmSprite() {
-    const number = ("000" + this.selectedPkm).slice(-3);
-    return `//serebbi.net/sunmoon/pokemon/${number}.png`
+    const number = ('000' + this.selectedPkm).slice(-3);
+    return `//serebbi.net/sunmoon/pokemon/${number}.png`;
   }
 
   constructor(
    private pokemonsService: PokemonsService
-  ) {
-    this.pokemonList = this.pokemonsService.getPokemons();
-  }
+  ) { }
 
   ngOnInit(): void {
   }
