@@ -8,27 +8,29 @@ import { VirtualTimeScheduler } from 'rxjs';
 })
 export class ListComponent implements OnInit {
 
-  isVisible : boolean;
+  selectedPkm = null;
 
-  nomeTexto : string;
-
-  pokemonList = [
+   pokemonList = [
     { name: 'Bulbasaur', number: 1 },
     { name: 'Charmander', number: 2 },
     { name: 'Squirtle', number: 3 },
     { name: 'Pikachu', number: 4 }
   ]
 
-  constructor() { 
-    this.isVisible = true;
-    this.nomeTexto = "Treina Web";
+
+  get pkmSprite() {
+    const number = ("000" + this.selectedPkm).slice(-3);
+    return `//serebbi.net/sunmoon/pokemon/${number}.png`
+  }
+
+  constructor() {
   }
 
   ngOnInit(): void {
   }
 
-  handleClick() {
-    alert('Hi!');
+  selectPokemon(pkm: any) {
+    this.selectedPkm = pkm;
   }
 
 }
