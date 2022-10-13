@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { VirtualTimeScheduler } from 'rxjs';
+import { PokemonsService } from 'src/app/services/pokemons.service';
 
-import { PokemonsService } from '../../services/pokemons.service';
+export type Pokemon = {
+  name: string,
+  resource_uri: string
+}
 
 @Component({
   selector: 'app-list',
@@ -9,30 +12,33 @@ import { PokemonsService } from '../../services/pokemons.service';
   styleUrls: ['./list.component.css']
 })
 export class ListComponent implements OnInit {
-
   nameFilter = '';
+  selectedPkm : Pokemon | null = null;
 
-  selectedPkm = null;
-
-  get pokemonList() {
-    return this.pokemonsService.pokemonList.filter(pokemon => {
+  get pokemonList(){
+    return this.pokemonService.pokeList.filter((pokemon: any) => {
       return pokemon.name.toLowerCase().indexOf(this.nameFilter.toLowerCase()) !== -1;
     })
   }
 
-  get pkmSprite() {
-    const number = ('000' + this.selectedPkm).slice(-3);
-    return `//serebbi.net/sunmoon/pokemon/${number}.png`;
+  get pkmSprite(){
+    if (this.selectedPkm) {
+      const number = ('000' + Number(this.pokemonService.getNumberFromUrl(this.selectedPkm.resource_uri))).slice(-3);
+      console.log(number);
+      return `https://serebii.net/sunmoon/pokemon/${number}.png`;
+    }
+    return `https://serebii.net/sunmoon/pokemon/001.png`;
   }
 
   constructor(
-   private pokemonsService: PokemonsService
-  ) { }
+    private pokemonService: PokemonsService
+  ) {  }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.pokemonService.listAll();
   }
-
-  selectPokemon(pkm: any) {
+  
+  selectPokemon(pkm: any){
     this.selectedPkm = pkm;
   }
 
