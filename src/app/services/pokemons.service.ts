@@ -15,13 +15,6 @@ export class PokemonsService {
   private url = 'https://dev.treinaweb.com.br/pokeapi';
   pokeList: any = [];
 
-  pokemonList = [
-    { name: 'Bulbasaur', number: 1 },
-    { name: 'Charmander', number: 2 },
-    { name: 'Squirtle', number: 3 },
-    { name: 'Pikachu', number: 4 }
-  ]
-
   constructor(
     private http: HttpClient
   ) { }
